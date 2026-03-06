@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mini Delivery App</title>
+</head>
+
+<body>
+
+<h1>Food Delivery App</h1>
+
+<h2>Menu</h2>
+
+<ul id="menu"></ul>
+
+<script>
+
+fetch("/foods")
+.then(res => res.json())
+.then(data => {
+
+ let menu = document.getElementById("menu");
+
+ data.forEach(food => {
+
+ let li = document.createElement("li");
+
+ li.innerHTML =
+ food.name + " - ₹" + food.price +
+ " <button onclick='orderFood("+food.id+")'>Order</button>";
+
+ menu.appendChild(li);
+
+ });
+
+});
+
+function orderFood(id){
+
+ fetch("/order",{
+
+ method:"POST",
+
+ headers:{
+ "Content-Type":"application/json"
+ },
+
+ body:JSON.stringify({foodId:id})
+
+ })
+
+ .then(res => res.json())
+ .then(data => alert(data.message));
+
+}
+
+</script>
+
+</body>
+</html>
